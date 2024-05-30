@@ -103,12 +103,13 @@ public class Interaction : MonoBehaviour
     }
 
 
-    //E 를 입력해서 상호작용 했을 때 - 플레이어 컨트롤러로 이동하는 리펙토링 고민*
-    public void OnInteractInput(InputAction.CallbackContext context)
+    //E 를 입력해서 상호작용 했을 때 - 플레이어 컨트롤러로 이동하는 리펙토링*
+    public void OnInteract()
     {   
-        // 키를 막 입력했을 때 &&  상호작용에 성공했을 때
-        if (context.phase == InputActionPhase.Started && curInteractable != null)
+        // 상호작용에 성공했을 때
+        if (curInteractable != null)
         {
+            //아이템 오브젝트 함수 호출
             curInteractable.OnInteract();
             curInteractGameObject = null;
             curInteractable = null;

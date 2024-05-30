@@ -24,7 +24,7 @@ public class ItemObject : MonoBehaviour, IInteractable
         return str;
     }
 
-    //이걸 누르면 상호작용 함수를 호출해주겠다
+    //인터렉션 클래스에서 호출, 이걸 누르면 상호작용 함수를 호출해주겠다
     public void OnInteract()
     {
         CharacterManager.Instance.Player.itemData = data;

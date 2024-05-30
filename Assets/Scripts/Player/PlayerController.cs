@@ -26,13 +26,21 @@ public class PlayerController : MonoBehaviour
     private Vector2 mouseDelta;
 
     [HideInInspector]
+    // 인벤이 켜졌을때 선택을 위한 마우스 커서가 필요
+    // 화면이 움직이면 안됨, 그것을 컨트롤하기 위한 불값
     public bool canLook = true;
 
+    //유아이 인벤 토글 함수 구독을 위한 델리게이트
+    public Action inventory;
+
     private Rigidbody rigidbody;
+
+    private Interaction interaction;
 
     private void Awake()
     {
         rigidbody = GetComponent<Rigidbody>();
+        interaction = GetComponent<Interaction>();
     }
 
     void Start()
@@ -85,6 +93,29 @@ public class PlayerController : MonoBehaviour
         }
     }
 
+    public void OnInventory(InputAction.CallbackContext context)
+    {   
+        // 탭키를 눌렀을때
+        if (context.phase == InputActionPhase.Started)
+        {
+            // UIInventory 의 토글함수 이동을 위해 델리게이트를 사용
+            // inventory 에 등록된 함수 호출
+            inventory?.Invoke();
+            ToggleCursor();
+        }
+    }
+
+    // e 키로 파밍했을 때
+    public void OnInteractInput(InputAction.CallbackContext context)
+    {
+        //Debug.Log($"PlayerController.cs - OnInteractInput() - e 입력");
+
+        // 키를 막 입력했을 때
+        if (context.phase == InputActionPhase.Started)
+        {
+            interaction.OnInteract();
+        }
+    }
 
 
     private void Move()
@@ -142,9 +173,13 @@ public class PlayerController : MonoBehaviour
         return false;
     }
 
-    public void ToggleCursor(bool toggle)
+    public void ToggleCursor()
     {
+        // 기본 상태는 CursorLockMode.Locked - start()에서 설정
+        bool toggle = Cursor.lockState == CursorLockMode.Locked;
+        // CursorLockMode가 락이면 락을 풀어준다, 풀려있다면 락을 건다
         Cursor.lockState = toggle ? CursorLockMode.None : CursorLockMode.Locked;
+        // toggle 이 true일때 CursorLockMode.None 가되고 화면은 움직이지 않는다
         canLook = !toggle;
     }
 }

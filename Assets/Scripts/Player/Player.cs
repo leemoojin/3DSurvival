@@ -9,8 +9,11 @@ public class Player : MonoBehaviour
     //itemData 에 인터렉션되는 아이템 데이터를 넣어준다
     public ItemData itemData;
 
-    //addItem(델리게이트)에 구독된 함수를 실행
+    //파밍 : addItem(델리게이트)에 구독된 함수를 실행
     public Action addItem;
+
+    // 버릴 아이템 위치
+    public Transform dropPosition;
 
     private void Awake()
     {
